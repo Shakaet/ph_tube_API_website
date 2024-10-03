@@ -36,6 +36,42 @@ let loadVideo = async()=>{
 
 }
 
+let loadDetails=async(video)=>{
+
+    let res= await fetch(`https://openapi.programming-hero.com/api/phero-tube/video/${video}`)
+    let data=await res.json()
+    let result= displayDetails(data.video)
+
+
+
+}
+
+let displayDetails=(video)=>{
+    console.log(video)
+
+    let detailsContainer=document.getElementById("modal-content")
+
+    detailsContainer.innerHTML=`
+        <img src=${video.thumbnail}/>
+
+
+        <p> ${video.description} </p>
+    
+    
+    `
+
+   
+
+    //way 1
+
+    // document.getElementById("show_modal").click()
+
+    //way2
+
+    document.getElementById("custom_modal").showModal()  // showModal eta daisy ui r function
+
+}
+
 let  loadCategoriesVideos= async(id)=>{
 
     let res= await fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
@@ -125,9 +161,10 @@ let DisplayVideos=(videos)=>{
                 
 
                 </div>
-                <p> </p>
+               
                 <p> </p>
                 </div>
+                 <p><button onclick="loadDetails('${video.video_id}')" class="btn text-sm btn-error mt-5"> Details </button</p>
                 </div>
             </div>
                     
