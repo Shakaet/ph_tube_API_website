@@ -4,6 +4,15 @@
 
 // console.log("hello")
 
+let removeActiveButton=()=>{
+
+    let buttons= document.getElementsByClassName("btn-category")
+
+    for (let btn1 of buttons){
+        btn1.classList.remove("active")
+    }
+}
+
 let loadData = async()=>{
 
     let res= await fetch("https://openapi.programming-hero.com/api/phero-tube/categories")
@@ -27,10 +36,54 @@ let loadVideo = async()=>{
 
 }
 
+let  loadCategoriesVideos= async(id)=>{
+
+    let res= await fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+    let data=await res.json()
+    console.log(data.category)
+
+    removeActiveButton()
+
+    let activeBtn=document.getElementById(`btn-${id}`)
+    activeBtn.classList.add("active")
+    let result=DisplayVideos(data.category)
+
+    
+
+}
+
 
 let DisplayVideos=(videos)=>{
 
     let video_container=document.getElementById("videos")
+
+    video_container.innerHTML=''
+
+    if(videos.length===0){
+
+        video_container.classList.remove("grid")
+
+
+
+        video_container.innerHTML=`
+
+        <div class="min-h-[300px] flex flex-col gap-5 justify-center items-center">
+
+        <img src="assets/Icon.png"/>
+
+        <h1 class="text-center text-xl font-bold">No Content Here in this Category </h1>
+
+        
+
+        </div>
+        
+        
+        `;
+        return ;  
+    }
+    else{
+        video_container.classList.add("grid")
+    }
 
     for(let video of videos){
         console.log(video)
@@ -52,7 +105,7 @@ let DisplayVideos=(videos)=>{
                 alt="Shoes"class="h-full w-full object-cover" />
 
 
-                ${video.others.posted_date?.length===0 ?"" :`<span class=" p-2 absolute right-2 bottom-2 bg-black rounded-full text-white">${hour} hour ${min} min </span>`}
+                ${video.others.posted_date?.length===0 ?"" :`<span class=" p-2 text-xs absolute right-2 bottom-2 bg-black rounded-full text-white">${hour} hour ${min} min </span>`}
 
                 
             </figure>
@@ -100,6 +153,9 @@ loadVideo()
 // "1001"
 
 
+
+
+
 let DisplayData=(categories)=>{
 
     // categories.forEach((item)=>{
@@ -109,18 +165,31 @@ let DisplayData=(categories)=>{
 
     let container= document.getElementById("categories")
     container.classList=" flex justify-center py-2"
-    
+
+
 
     for(let item of categories){
         console.log(item)
         // create a button
 
-    let btn=document.createElement("button")
-    btn.classList="btn m-3"
-   
-    btn.innerText=item.category
+        let btn_div=document.createElement("div")
 
-    container.appendChild(btn)
+        btn_div.innerHTML =`
+        <button id="btn-${item.category_id}" onclick="loadCategoriesVideos(${item.category_id})" class="btn m-3 btn-category">
+
+          ${item.category}
+
+        </button>
+        
+        
+        `
+
+    // let btn=document.createElement("button")
+    // btn.classList="btn m-3"
+   
+    // btn.innerText=item.category
+
+    container.appendChild(btn_div)
     }
 
   
