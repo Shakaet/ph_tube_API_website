@@ -4,6 +4,12 @@
 
 // console.log("hello")
 
+document.getElementById("search").addEventListener("keyup",(e)=>{
+
+    loadVideo(e.target.value)
+
+})
+
 let removeActiveButton=()=>{
 
     let buttons= document.getElementsByClassName("btn-category")
@@ -25,9 +31,9 @@ let loadData = async()=>{
 }
 
 
-let loadVideo = async()=>{
+let loadVideo = async(search_text='')=>{
 
-    let res= await fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+    let res= await fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${search_text}`)
     let data=await res.json()
     console.log(data)
     console.log(data.videos)
@@ -237,4 +243,6 @@ let DisplayData=(categories)=>{
 }
 
 loadData()
+
+
 
