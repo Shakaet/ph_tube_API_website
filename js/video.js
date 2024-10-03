@@ -8,6 +8,8 @@ let loadData = async()=>{
 
     let res= await fetch("https://openapi.programming-hero.com/api/phero-tube/categories")
     let data=await res.json()
+    console.log(data)
+    console.log(data.categories)
     let result= DisplayData(data.categories)
 
 
@@ -18,6 +20,8 @@ let loadVideo = async()=>{
 
     let res= await fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
     let data=await res.json()
+    console.log(data)
+    console.log(data.videos)
     let result= DisplayVideos(data.videos)
 
 
@@ -34,6 +38,11 @@ let DisplayVideos=(videos)=>{
         let card= document.createElement("div")
 
         card.classList="card bg-base-100"
+        let time= video.others.posted_date
+
+        let hour= parseInt(time/3600)
+        let sec= parseInt(time%3600)
+        let min= parseInt(sec/60)
 
         card.innerHTML=`
 
@@ -42,7 +51,10 @@ let DisplayVideos=(videos)=>{
                 src=${video.thumbnail}
                 alt="Shoes"class="h-full w-full object-cover" />
 
-                <span class="absolute right-2 bottom-2 bg-black rounded-full text-white"> ${video.others.posted_date} </span>
+
+                ${video.others.posted_date?.length===0 ?"" :`<span class=" p-2 absolute right-2 bottom-2 bg-black rounded-full text-white">${hour} hour ${min} min </span>`}
+
+                
             </figure>
             <div class="px-2 py-3 flex gap-3">
                 <div>
